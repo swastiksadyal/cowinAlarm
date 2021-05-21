@@ -242,3 +242,7 @@ else:
         print("Thank you!")
     else:
         print("\033[0;36;47m Thank You! \n Try again some time later maybe you`ll get lucky")
+# Created with <3 by Swastik @swastiksadyal
+# please be noted that this script might contain bug and you are on your own if you find any
+# or you can let me know by pinging
+# created in 3 Hours in total 
