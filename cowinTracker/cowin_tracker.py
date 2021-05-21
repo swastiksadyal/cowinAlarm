@@ -13,17 +13,18 @@ print("""^ ^
 (   ) Cowin Alarm
 -"-"-----------------""")
 
+age = int(input("Enter your age: "))
+if(age < 45):
+    age_lim = 18
+else:
+    age_lim = 45
 def checkForDoses(ID,age_lim):
     for j in range(len(_centers["centers"][ID]["sessions"])):
         if(int(_centers["centers"][ID]["sessions"][j]["available_capacity"]) > 1):
             if(int(_centers["centers"][ID]["sessions"][j]["min_age_limit"]) == age_lim):
                 return True
 
-def playSound():
-    p = multiprocessing.Process(target=playsound, args=("./alarmSound/alarm-sound-effect.mp3",))
-    p.start()
-    input("press ENTER to stop playback")
-    p.terminate()
+
 
 def updateData(dist,center):
     _centers = cowin.get_availability_by_district(dist)
@@ -88,19 +89,19 @@ if(isFile):
         for a in range(len(_centers["centers"])):
             if(int(_centers["centers"][a]["center_id"]) == centerID):
                 centerID_Index = a
-        center_Info = PrettyTable([" ", "   ","    "])
-        center_Info.add_row(["Center ID",int(_centers["centers"][centerID_Index]["center_id"]),_centers["centers"][centerID_Index]["name"]])
-        center_Info.add_row(["---------","---------","---------"])
-        center_Info.add_row(["Address ",_centers["centers"][centerID_Index]["address"],_centers["centers"][centerID_Index]["pincode"]])
-        center_Info.add_row(["---------","---------","---------"])
-        center_Info.add_row([" ",_centers["centers"][centerID_Index]["block_name"],_centers["centers"][centerID_Index]["district_name"]])
-        center_Info.add_row(["---------","---------","---------"])
-        center_Info.add_row(["Fee Type ",_centers["centers"][centerID_Index]["fee_type"]," "])
-        center_Info.add_row(["---------","---------","---------"])
-        center_Info.add_row(["Time",_centers["centers"][centerID_Index]["from"],_centers["centers"][centerID_Index]["to"]])
-        center_Info.add_row(["---------","---------","---------"])
-        center_Info.add_row(["Session","---------","---------"])
-        center_Info.add_row(["---------","---------","---------"])
+            center_Info = PrettyTable([" ", "   ","    "])
+            center_Info.add_row(["Center ID",int(_centers["centers"][centerID_Index]["center_id"]),_centers["centers"][centerID_Index]["name"]])
+            center_Info.add_row(["---------","---------","---------"])
+            center_Info.add_row(["Address ",_centers["centers"][centerID_Index]["address"],_centers["centers"][centerID_Index]["pincode"]])
+            center_Info.add_row(["---------","---------","---------"])
+            center_Info.add_row([" ",_centers["centers"][centerID_Index]["block_name"],_centers["centers"][centerID_Index]["district_name"]])
+            center_Info.add_row(["---------","---------","---------"])
+            center_Info.add_row(["Fee Type ",_centers["centers"][centerID_Index]["fee_type"]," "])
+            center_Info.add_row(["---------","---------","---------"])
+            center_Info.add_row(["Time",_centers["centers"][centerID_Index]["from"],_centers["centers"][centerID_Index]["to"]])
+            center_Info.add_row(["---------","---------","---------"])
+            center_Info.add_row(["Session","---------","---------"])
+            center_Info.add_row(["---------","---------","---------"])
         for j in range(len(_centers["centers"][centerID_Index]["sessions"])):
             center_Info.add_row(["Date",_centers["centers"][centerID_Index]["sessions"][j]["date"]," "])
             center_Info.add_row(["---------","---------","---------"])
@@ -121,12 +122,10 @@ if(isFile):
         #data.write(str(_centers["centers"][centerID_Index]["center_id"]) + " " + str(_centers["centers"][centerID_Index]["name"]) + "\n")
         print(str(_centers["centers"][centerID_Index]["center_id"]) + " " + str(_centers["centers"][centerID_Index]["name"]))
     else:
+        #hello there
         os.remove(path)
-       # os.execl(sys.executable, os.path.abspath("cowin_tracker.py"), *sys.argv)
         os.system('python "cowin_tracker.py"')
-        #if (size < 1):
-           # os.remove(path)
-            #fileSys()
+        #bug here
 else:
     data = open(path,"w")
     data.write("1 \n")
@@ -209,23 +208,14 @@ else:
     data.write(str(_centers["centers"][centerID_Index]["center_id"]) + " " + str(_centers["centers"][centerID_Index]["name"]) + "\n")
     print(str(_centers["centers"][centerID_Index]["center_id"]) + " " + str(_centers["centers"][centerID_Index]["name"]))
     # the main program starts here
-    age = int(input("Enter your age: "))
-    if(age < 45):
-        age_lim = 18
-    else:
-        age_lim = 45
+
     data.close()
 
-age = int(input("Enter your age: "))
-if(age < 45):
-    age_lim = 18
-else:
-    age_lim = 45
 input("press ENTER to begin search...")
 ID = updateData(district,centerID)
-
 if(checkForDoses(ID,age_lim)):
     print("\033[1;32;40m Woohoo! vaccine is available... register fast")
+    playsound("./alarmSound/alarm-sound-effect.mp3")
 else:
     print("\033[1;31;40m I`m sorry I couldn`t find any available vaccine Slots \n If you want i can keep on looking and will notify when any slot is available!")
     if(what()):
@@ -233,7 +223,7 @@ else:
         while(checkForDoses(ID,age_lim) != False):
             if(checkForDoses(ID,age_lim)):
                 print("\033[0;32;47m Well done Slot has been found TaDa!")
-                playSound()
+                playsound("./alarmSound/alarm-sound-effect.mp3")
                 break
             else:
                 ID = updateData(district,centerID)
@@ -241,7 +231,9 @@ else:
             time.sleep(30)
         print("Thank you!")
     else:
-        print("\033[0;36;47m Thank You! \n Try again some time later maybe you`ll get lucky")
+        pass
+print("\033[0;36;47m Thank You! \n Try again some time later maybe you`ll get lucky")
+
 # Created with <3 by Swastik @swastiksadyal
 # please be noted that this script might contain bug and you are on your own if you find any
 # or you can let me know by pinging
